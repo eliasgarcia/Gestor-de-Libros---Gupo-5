@@ -73,8 +73,8 @@ public class LoginInterfaz {
 		frame.getContentPane().add(user);
 		
 		JLabel pass = new JLabel("Contraseña:");
-		pass.setHorizontalAlignment(SwingConstants.RIGHT);
-		pass.setBounds(28, 57, 64, 13);
+		pass.setHorizontalAlignment(SwingConstants.LEFT);
+		pass.setBounds(28, 57, 126, 13);
 		frame.getContentPane().add(pass);
 		
 		userField = new JTextField();
