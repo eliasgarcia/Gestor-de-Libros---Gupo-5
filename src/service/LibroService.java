@@ -6,6 +6,10 @@ import java.util.List;
 import dao.LibroDao;
 import model.Libro;
 
+/**
+ * Capa de servicio de libro.
+ * Realiza la comunicacion de la interfaz
+ */
 public class LibroService {
 
 	private LibroDao libroDao;

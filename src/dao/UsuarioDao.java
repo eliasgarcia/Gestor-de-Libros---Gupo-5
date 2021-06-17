@@ -19,15 +19,26 @@ import javax.swing.JFileChooser;
 import org.mindrot.jbcrypt.*;
 import model.Usuario;
 
+/**
+ * Capa de acceso a la base de datos de usuarios.
+ */
 public class UsuarioDao {
 
+	/* instancia del singleton */
 	private static UsuarioDao instancia;
+
+	/* separador de usuarios */
 	private final static String SEPARADOR = "&&";
+
+	/* paths de la base de datos */
 	private String path;
 	private String pathBackup;
 	private String decodedPath;
 	private String decodedPathBackup;
 
+	/**
+	 * Singleton
+	 */
 	private UsuarioDao() {
 		getPath();
 	}
@@ -39,6 +50,15 @@ public class UsuarioDao {
 		return instancia;
 	}
 	
+	/**
+	 * Verifica que un usuario sea valido. Para esto, se fija que el usuario
+	 * ingresado no exista en la base de datso de usuarios.
+	 *
+	 * Se utiliza a la hora de registrar un nuevo usuario.
+	 *
+	 * @param user el usuario ingresado
+	 * @return devuelve true si es valido. False en otro caso
+	 */
 	public boolean usuarioValido(Usuario user) {
 		
 		Usuario userIngresado = new Usuario(user.obtenerUser(), BCrypt.hashpw(user.obtenerPass(), BCrypt.gensalt(4)));
@@ -46,6 +66,7 @@ public class UsuarioDao {
 
 		cargarUsuarios(usuarios);
 
+		/* me fijo que no se encuentre entre los usuarios */
 		for(Usuario userSeguro : usuarios) {
 			if(userSeguro.equals(userIngresado)) {
 				return false;
@@ -55,12 +76,19 @@ public class UsuarioDao {
 		return true;
 	}
 	
+	/**
+	 * Verifica que un login sea valido. Para esto, verifica que exista en la
+	 * base de datos y que el hash de la contraseña coincida con el almacenado
+	 *
+	 * @param user el usuario que hace login.
+	 * @return true si es un login valido. false en otro caso
+	 */
 	public boolean loginValido(Usuario user) {
-		
 		List<Usuario> usuarios = new ArrayList<>();
 
 		cargarUsuarios(usuarios);
 
+		/* me fijo que exista en la base de datos y coincida su hash */
 		for(Usuario userSeguro : usuarios) {
 			if(userSeguro.obtenerUser().equals(user.obtenerUser())) {
 				if(BCrypt.checkpw(user.obtenerPass(), userSeguro.obtenerPass())) {
@@ -72,12 +100,19 @@ public class UsuarioDao {
 		return false;
 	}
 
+	/**
+	 * Cargo los usuarios en memoria
+	 *
+	 * @param usuarios Parametro de salida donde se cargaran los usuarios
+	 */
 	private void cargarUsuarios(List<Usuario> usuarios) {
 		Scanner sc;
 		try {
 			sc = new Scanner(new File(decodedPath));
 			while (sc.hasNextLine()) {
+				/* parseo de atributos */
 				String[] atributos = sc.nextLine().split(SEPARADOR);
+
 				usuarios.add(new Usuario(atributos[0], atributos[1]));
 			}
 			sc.close();
@@ -86,6 +121,12 @@ public class UsuarioDao {
 		}
 	}
 
+	/**
+	 * Genero un nuevo usuario
+	 *
+	 * @param user el usuario a generar
+	 * @return true si se pudo generar. false en otro caso
+	 */
 	public boolean generarUsuario(Usuario user) {
 		
 		Usuario userIngresado = new Usuario(user.obtenerUser(), BCrypt.hashpw(user.obtenerPass(), BCrypt.gensalt(4)));
