@@ -14,6 +14,10 @@ import model.Libro;
 import service.LibroService;
 import service.LogService;
 
+/*
+ * Interfaz de nuevo libro
+ *
+ */
 class NuevoLibroInterfaz {
 
 	private JDialog frame;
@@ -28,6 +32,11 @@ class NuevoLibroInterfaz {
 	private LogService logService;
 	private ABMInterfaz abmInterfaz;
 
+	/**
+	 * Crea la interfaz de nuevo libro
+	 *
+	 * @param abmInterfaz la interfaz anterior
+	 */
 	NuevoLibroInterfaz(ABMInterfaz abmInterfaz) {
 		libroService = LibroService.obtenerSingletonInstance();
 		logService = LogService.getSingletonInstance();
@@ -40,12 +49,14 @@ class NuevoLibroInterfaz {
 	 */
 	private void initialize() {
 		int anchoCampo = 150;
+		/* ventana */
 		frame = new JDialog(abmInterfaz,"Registrar nuevo libro",true);
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 254, 439);
 		frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		/* titulo */
 		JLabel lblCompleteLosCampos = new JLabel("Complete los campos:");
 		lblCompleteLosCampos.setFont(lblCompleteLosCampos.getFont().deriveFont(lblCompleteLosCampos.getFont().getStyle() | Font.BOLD));
 		lblCompleteLosCampos.setBounds(48, 11, 209, 14);
@@ -57,10 +68,12 @@ class NuevoLibroInterfaz {
 		frame.getContentPane().add(txfISBN);
 		txfISBN.setColumns(10);
 		
+		/* isbn */
 		JLabel lblIsbn = new JLabel("ISBN:");
 		lblIsbn.setBounds(48, 38, anchoCampo, 14);
 		frame.getContentPane().add(lblIsbn);
 		
+		/* titulo */
 		JLabel lblTtulo = new JLabel("Título:");
 		lblTtulo.setBounds(48, 83, anchoCampo, 14);
 		frame.getContentPane().add(lblTtulo);
@@ -70,6 +83,7 @@ class NuevoLibroInterfaz {
 		frame.getContentPane().add(txfTitulo);
 		txfTitulo.setColumns(10);
 		
+		/* autor */
 		JLabel lblAutor = new JLabel("Autor:");
 		lblAutor.setBounds(48, 128, anchoCampo, 14);
 		frame.getContentPane().add(lblAutor);
@@ -79,6 +93,7 @@ class NuevoLibroInterfaz {
 		frame.getContentPane().add(txfAutor);
 		txfAutor.setColumns(10);
 		
+		/* editorial */
 		JLabel lblEditorial = new JLabel("Editorial:");
 		lblEditorial.setBounds(48, 173, anchoCampo, 14);
 		frame.getContentPane().add(lblEditorial);
@@ -88,6 +103,7 @@ class NuevoLibroInterfaz {
 		frame.getContentPane().add(txfEditorial);
 		txfEditorial.setColumns(10);
 		
+		/* edicion */
 		JLabel lblEdicion = new JLabel("Edición:");
 		lblEdicion.setBounds(48, 223, anchoCampo, 14);
 		frame.getContentPane().add(lblEdicion);
@@ -97,7 +113,8 @@ class NuevoLibroInterfaz {
 		frame.getContentPane().add(txfEdicion);
 		txfEdicion.setColumns(10);
 		
-		JLabel lblAnioPublicacion = new JLabel("Año publicación:");
+		/* año */
+	 	JLabel lblAnioPublicacion = new JLabel("Año publicación:");
 		lblAnioPublicacion.setBounds(48, 268, anchoCampo, 14);
 		frame.getContentPane().add(lblAnioPublicacion);
 		
@@ -106,16 +123,22 @@ class NuevoLibroInterfaz {
 		frame.getContentPane().add(txfAnioPublicacion);
 		txfAnioPublicacion.setColumns(10);
 		
+		/* boton aceptar */
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(e -> agregar());
 		btnAceptar.setBounds(17, 346, 92, 20);
 		frame.getContentPane().add(btnAceptar);
 		
+		/* boton cancelar */
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(e -> frame.dispose());
 		btnCancelar.setBounds(119, 346, 92, 20);
 		frame.getContentPane().add(btnCancelar);
 		
+		/*
+		 * Mensaje de error
+		 * Aparece cuando falla la validacion
+		 */
 		lblMensajeDeError = new JLabel("Mensaje de error");
 		lblMensajeDeError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMensajeDeError.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -127,12 +150,18 @@ class NuevoLibroInterfaz {
 		frame.setVisible(true);
 	}
 	
+	/*
+	 * Agregar nuevo libro
+	 *
+	 */
 	private void agregar() {
 
+		/* si hay un campo vacio */
 		if(campoVacio()) {
 			lblMensajeDeError.setText("Complete los campos por favor");
 			lblMensajeDeError.setVisible(true);
 		} else {
+			/* todos los campos llenos */
 			String isbn = txfISBN.getText();
 			String titulo = txfTitulo.getText(); 
 			String autor = txfAutor.getText();
@@ -142,19 +171,27 @@ class NuevoLibroInterfaz {
 			
 			Libro nuevo;
 			try {
+				/* creo un nuevo libro */
 				nuevo = new Libro(isbn, titulo, autor, editorial, edicion, anioPublicacion);
 				
+				/* guardo */
 				if(libroService.guardar(nuevo)) {
+					/* si pudo guardar */
 					abmInterfaz.buscar();
 					logService.logRegistrarLibro(isbn, true);
 					JOptionPane.showMessageDialog(null, "Libro guardado correctamente", "", JOptionPane.INFORMATION_MESSAGE);
 					frame.dispose();
 				} else {
+					/* ISBN repetido */
 					logService.logRegistrarLibro(isbn, false);
 					lblMensajeDeError.setText("ISBN Repetido. Elija otro.");
 					lblMensajeDeError.setVisible(true);
 				}
 			} catch (Exception error) {
+				/*
+				 * si al crear un libro hay errores, los muestro con el
+				 * mensaje inferior
+				 */
 				lblMensajeDeError.setText(error.getMessage());
 				lblMensajeDeError.setVisible(true);
 			}

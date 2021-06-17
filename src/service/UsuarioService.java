@@ -3,9 +3,13 @@ package service;
 import dao.UsuarioDao;
 import model.Usuario;
 
+/**
+ * Capa de servicio de Usuario.
+ * Hace de intermediario entre interfaz y DAO.
+ */
 public class UsuarioService {
 	
-	private UsuarioDao usuarioDao; 
+	private UsuarioDao usuarioDao;
 	private static UsuarioService instancia;
 	
 	private UsuarioService() {
@@ -18,6 +22,10 @@ public class UsuarioService {
 		}
 		return instancia;
 	}
+
+	/*
+	 * Los siguientes metodos son intermediarios del DAO
+	 */
 	
 	public boolean usuarioValido(Usuario user) {
 		return usuarioDao.usuarioValido(user);
