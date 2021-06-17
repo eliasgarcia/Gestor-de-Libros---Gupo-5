@@ -3,8 +3,12 @@ package model;
 import java.util.Comparator;
 import java.util.regex.Pattern;
 
+/**
+ * BO de Libro.
+ */
 public class Libro implements Comparable<Libro>, Comparator<Libro> {
 
+	/* atributos del libro */
 	private String isbn;
 	private String titulo;
 	private String autor;
@@ -16,6 +20,18 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 		
 	}
 
+	/**
+	 * Crea un libro, pero antes verifica que sea valido
+	 *
+	 * @param isbn            el isbn del libro
+	 * @param titulo          un titulo alfanumerico
+	 * @param autor           el autor del libro
+	 * @param editorial       la editorial del libro.
+	 * @param edicion         una edicion entre 1 y 99.
+	 * @param anioPublicacion el año de publicación entre 1900 y 2021
+	 * @throws Exception      cuando el libro creado no es valido. Lleva un
+	 *                        mensaje con el error de la validez
+	 */
 	public Libro(String isbn, String titulo, String autor, String editorial, String edicion, String anioPublicacion) throws Exception{
 		
 		if( isbn.length() != 10 && isbn.length() != 13 )
@@ -65,6 +81,12 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 		this.anioPublicacion = Integer.parseInt(anioPublicacion);
 	}
 
+	/*
+	 * ==========================================================================
+	 *                              SETTERS
+	 * ==========================================================================
+	 */
+
 	public void especificarISBN(String isbn) {
 		this.isbn = isbn;
 	}
@@ -89,6 +111,12 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 		this.anioPublicacion = anioPublicacion;
 	}
 	
+	/*
+	 * ==========================================================================
+	 *                              GETTERS
+	 * ==========================================================================
+	 */
+
 	public String obtenerISBN() {
 		return isbn;
 	}
@@ -123,10 +151,16 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 		return uno.compareTo(dos);
 	}
 
+	/**
+	 * Devuelve un arreglo listo para ser usado para grabar el libro
+	 */
 	public String[] enFormatoFila() {
 		return new String[]{obtenerISBN(),obtenerTitulo(),obtenerAutor(),obtenerEditorial(),String.valueOf(obtenerEdicion()),String.valueOf(obtenerAnioPublicacion())};
 	}
 	
+	/**
+	 * Devuelve un string con los separadores para ser usado como registro.
+	 */
 	public String enFormatoRegistro(String separado) {
 		return new String(isbn + separado + titulo + separado + autor + separado + editorial + separado + edicion + separado + anioPublicacion + "\n");
 	}
@@ -156,6 +190,12 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 		return true;
 	}
 
+	/*
+	 * ==========================================================================
+	 *                               UTILES
+	 * ==========================================================================
+	 */
+
 	private boolean esNumerico(String texto) {
 		return Pattern.matches("^[0-9]+$", texto);
 	}
@@ -167,7 +207,6 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 	private boolean esAlfanumerico(String texto) {
 		return Pattern.matches("[a-zA-Z0-9áéíóúÁÉÍÓÚ][a-zA-Z0-9 ,áéíóúÁÉÍÓÚ]*$", texto);
 	}
-	
 	
 	private boolean verificarRango(String texto, Integer min, Integer max) {
 		Integer numero = Integer.parseInt(texto);

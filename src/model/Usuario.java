@@ -1,7 +1,11 @@
 package model;
 
+/**
+ * BO de Usuario
+ */
 public class Usuario {
 
+	/* atributos */
 	private String user;
 	private String pass;
 	
@@ -9,6 +13,12 @@ public class Usuario {
 		this.user = user.toLowerCase();
 		this.pass = pass; 
 	}
+
+	/*
+	 * ==========================================================================
+	 * SETTERS
+	 * ==========================================================================
+	 */
 	
 	public void especificarUser(String user) {
 		this.user = user;
@@ -17,6 +27,12 @@ public class Usuario {
 	public void especificarPass(String pass) {
 		this.pass = pass;
 	}
+
+	/*
+	 * ==========================================================================
+	 * GETTERS
+	 * ==========================================================================
+	 */
 	
 	public String obtenerUser() {
 		return user;

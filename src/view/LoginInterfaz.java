@@ -18,6 +18,9 @@ import model.Usuario;
 import service.LogService;
 import service.UsuarioService;
 
+/**
+ * Interfaz de inicio de sesion
+ */
 public class LoginInterfaz {
 
 	private JFrame frame; 
@@ -67,11 +70,13 @@ public class LoginInterfaz {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		/* Textfield donde se pone el usuario */
 		JLabel user = new JLabel("Usuario:");
 		user.setHorizontalAlignment(SwingConstants.RIGHT);
 		user.setBounds(10, 17, 64, 13);
 		frame.getContentPane().add(user);
 		
+		/* Textfield donde se pone la contraseña */
 		JLabel pass = new JLabel("Contraseña:");
 		pass.setHorizontalAlignment(SwingConstants.LEFT);
 		pass.setBounds(28, 57, 126, 13);
@@ -82,11 +87,13 @@ public class LoginInterfaz {
 		frame.getContentPane().add(userField);
 		userField.setColumns(10);
 		
+		/* boton de ingresar */
 		JButton btnAceptar = new JButton("INGRESAR");
 		btnAceptar.addActionListener(e -> logearse());
 		btnAceptar.setBounds(164, 29, 108, 22);
 		frame.getContentPane().add(btnAceptar);
 		
+		/* boton de registrarse */
 		JButton btnRegistro = new JButton("Registrarse");
 		btnRegistro.setBorder(new LineBorder(Color.GREEN));
 		btnRegistro.addActionListener(e -> new RegistroInterfaz(frame));
@@ -102,15 +109,21 @@ public class LoginInterfaz {
 		frame.getContentPane().add(lblNewLabel);
 	}
 	
+	/*
+	 * Realizar login
+	 */
 	private void logearse(){
+		/* obtengo datos ingresados */
 		String user = userField.getText();
 		String pass = new String(passwordField.getPassword());
 
+		/* valido que ninguno este vacio */
 		if(user.isEmpty() || pass.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Complete los campos por favor", "", JOptionPane.ERROR_MESSAGE);
 		} else {
 			Usuario usuario = new Usuario(user, pass);
 
+			/* si el login es valido, lo dejo pasar */
 			if(usuarioService.loginValido(usuario)) {
 				logService.logLoggearUser(user, true);
 				new ABMInterfaz().setVisible(true);

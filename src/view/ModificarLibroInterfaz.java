@@ -14,6 +14,9 @@ import model.Libro;
 import service.LibroService;
 import service.LogService;
 
+/**
+ * Interfaz de modificacion de libros
+ */
 class ModificarLibroInterfaz {
 
 	private JDialog frame;
@@ -30,6 +33,12 @@ class ModificarLibroInterfaz {
 	private LibroService libroService;
 	private LogService logService;
 	
+	/**
+	 * Crear ventana de modificar libro
+	 *
+	 * @param libro       el libro a modificar
+	 * @param abmInterfaz la interfaz anterior
+	 */
 	ModificarLibroInterfaz(Libro libro, ABMInterfaz abmInterfaz) {
 		this.abmInterfaz = abmInterfaz;
 		this.libro = libro;
@@ -41,6 +50,7 @@ class ModificarLibroInterfaz {
 
 	private void initialize() {
 		int anchoCampo = 150;
+		/* ventana */
 		frame = new JDialog(abmInterfaz,"Modificar libro",true);
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 274, 441);
@@ -52,6 +62,7 @@ class ModificarLibroInterfaz {
 		lblCompleteLosCampos.setBounds(55, 11, 250, 14);
 		frame.getContentPane().add(lblCompleteLosCampos);
 		
+		/* modificar ISBN */
 		txfISBN = new JTextField();
 		txfISBN.setToolTipText("");
 		txfISBN.setBounds(55, 50, anchoCampo, 20);
@@ -63,6 +74,7 @@ class ModificarLibroInterfaz {
 		lblIsbn.setBounds(55, 36, anchoCampo, 14);
 		frame.getContentPane().add(lblIsbn);
 		
+		/* modificar titulo */
 		JLabel lblTtulo = new JLabel("Título:");
 		lblTtulo.setBounds(55, 81, anchoCampo, 14);
 		frame.getContentPane().add(lblTtulo);
@@ -73,6 +85,7 @@ class ModificarLibroInterfaz {
 		frame.getContentPane().add(txfTitulo);
 		txfTitulo.setColumns(10);
 		
+		/* modificar autor */
 		JLabel lblAutor = new JLabel("Autor:");
 		lblAutor.setBounds(55, 126, anchoCampo, 14);
 		frame.getContentPane().add(lblAutor);
@@ -83,6 +96,7 @@ class ModificarLibroInterfaz {
 		frame.getContentPane().add(txfAutor);
 		txfAutor.setColumns(10);
 		
+		/* modificar editorial */
 		JLabel lblEditorial = new JLabel("Editorial:");
 		lblEditorial.setBounds(55, 171, anchoCampo, 14);
 		frame.getContentPane().add(lblEditorial);
@@ -93,6 +107,7 @@ class ModificarLibroInterfaz {
 		frame.getContentPane().add(txfEditorial);
 		txfEditorial.setColumns(10);
 		
+		/* modificar edicion */
 		JLabel lblEdicin = new JLabel("Edición:");
 		lblEdicin.setBounds(55, 216, anchoCampo, 14);
 		frame.getContentPane().add(lblEdicin);
@@ -103,6 +118,7 @@ class ModificarLibroInterfaz {
 		frame.getContentPane().add(txfEdicion);
 		txfEdicion.setColumns(10);
 		
+		/* modificar anio */
 		JLabel lblAoPublicacin = new JLabel("Año publicación:");
 		lblAoPublicacin.setBounds(55, 261, anchoCampo, 14);
 		frame.getContentPane().add(lblAoPublicacin);
@@ -113,16 +129,19 @@ class ModificarLibroInterfaz {
 		frame.getContentPane().add(txfAnioPublicacion);
 		txfAnioPublicacion.setColumns(10);
 		
+		/* aceptar */
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(arg0 -> modificar());
 		btnAceptar.setBounds(38, 339, 93, 20);
 		frame.getContentPane().add(btnAceptar);
 		
+		/* cancelar */
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(arg0 -> frame.dispose());
 		btnCancelar.setBounds(141, 338, 93, 21);
 		frame.getContentPane().add(btnCancelar);
 		
+		/* Mensaje de error luego de la validacion erronea */
 		lblMensajeDeError = new JLabel("Mensaje de error");
 		lblMensajeDeError.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblMensajeDeError.setForeground(Color.RED);

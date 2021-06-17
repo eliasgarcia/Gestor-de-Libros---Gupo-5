@@ -2,11 +2,19 @@ package service;
 
 import dao.LogDao;
 
+/**
+ * Capa de servicio de Logger.
+ * Une interfaz con DAO
+ * Maneja el Modelo de Log
+ */
 public class LogService {
 
 	private LogDao logDao;
 	private static LogService instancia;
 
+	/*
+	 * Singleton
+	 */
 	private LogService() {
 		logDao = LogDao.getSingletonInstance();
 	}
@@ -18,10 +26,18 @@ public class LogService {
 		return instancia;
 	}
 	
+	/*
+	 * Abre log
+	 */
 	public void logAbrir() {
 		logDao.logAbrir();
 	}
 	
+	
+	/*
+	 * Las siguientes funciones hacen de intermediario con el DAO
+	 */
+
 	public void logLoggearUser(String user, boolean correcto) {
 		logDao.logLoggearUser(user, correcto);
 	}
